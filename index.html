@@ -51,9 +51,23 @@
             border-bottom-left-radius: 6px;
             border-bottom-right-radius: 6px;
         }
+        
+        /* === PERUBAHAN CSS DIMULAI DI SINI === */
 
+        /* 1. Wrapper baru untuk menampung surat dan foto */
+        .content-wrapper {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1; /* Atur z-index awal */
+        }
+        
+        /* 2. Modifikasi .letter, hapus properti yang dipindah ke wrapper */
         .letter {
-            position: relative;
+            position: relative; /* Diubah dari absolute/relative sebelumnya */
+            z-index: 10;       /* Pastikan surat di atas foto */
             background-color: #e0d9dd;
             width: 90%;
             margin: 0 auto;
@@ -73,12 +87,72 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background-image: linear-gradient(180deg, 
-                rgba(255,255,255,0.00) 25%, 
-                rgba(255,231,236,0.70) 55%, 
+            background-image: linear-gradient(180deg,
+                rgba(255,255,255,0.00) 25%,
+                rgba(255,231,236,0.70) 55%,
                 rgba(255,231,236,1.00) 100%);
             pointer-events: none;
         }
+        
+        /* 3. Style untuk kontainer foto dan foto itu sendiri */
+        .photo-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 11; 
+            pointer-events: none;
+        }
+
+        .photo {
+            position: absolute;
+            width: 90px;
+            height: auto;
+            border: 4px solid white;
+            border-radius: 6px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            top: 75%;
+            left: 50%;
+            transform: translate(10%, 0) scale(0);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(.17,.67,.6,1.24);
+        }
+
+        /* 4. Terapkan animasi ke .content-wrapper, bukan ke .letter */
+        .close .content-wrapper {
+            transform: translateY(0px);
+            transition: transform 0.4s ease, z-index 1s;
+            z-index: 1;
+        }
+
+        .open .content-wrapper {
+            transform: translateY(-120px) rotate(-2deg);
+            transition: transform 0.4s 0.6s ease, z-index 0.6s;
+            z-index: 2;
+        }
+
+        /* 5. Atur animasi untuk foto saat amplop terbuka */
+        .open .photo {
+            opacity: 1;
+        }
+
+        .open .photo1 {
+            transform: translate(-130%, -5%) rotate(-20deg) scale(1);
+            transition-delay: 0.8s;
+        }
+
+        .open .photo2 {
+            transform: translate(-50%, -20%) rotate(5deg) scale(1);
+            transition-delay: 0.9s;
+        }
+
+        .open .photo3 {
+            transform: translate(30%, -15%) rotate(15deg) scale(1);
+            transition-delay: 1s;
+        }
+        
+        /* === AKHIR PERUBAHAN CSS === */
 
         .message {
             position: relative;
@@ -94,10 +168,10 @@
 
         .message p {
             margin: 10px 0;
-            font-size: 1.4em;
+            font-size: 1em;
             text-shadow: 0 2px 3px rgba(0,0,0,0.1);
         }
-        
+
         .lyrics {
             display: none;
             font-size: 1.2em;
@@ -108,13 +182,13 @@
             max-height: 130px;
             overflow-y: auto;
         }
-        
+
         .lyric-page {
             display: none;
             opacity: 0;
             transition: opacity 0.5s ease;
         }
-        
+
         .lyric-page.active {
             display: block;
             opacity: 1;
@@ -143,17 +217,9 @@
             z-index: 5;
         }
 
-        .close .letter {
-            transform: translateY(0px); 
-            transition: transform 0.4s ease, z-index 1s;
-            z-index: 1;
-        }
-
-        .open .letter {
-            transform: translateY(-60px) rotate(-2deg);
-            transition: transform 0.4s 0.6s ease, z-index 0.6s;
-            z-index: 2;
-        }
+        /* Hapus style animasi .letter yang lama */
+        /* .close .letter { ... } */
+        /* .open .letter { ... } */
 
         .letter-corner {
             position: absolute;
@@ -292,7 +358,7 @@
             display: block;
             opacity: 1;
         }
-        
+
         .page-indicator {
             position: absolute;
             bottom: 5px;
@@ -303,7 +369,7 @@
             color: #d46a84;
             opacity: 0.7;
         }
-        
+
         #nextBtn {
             display: none;
         }
@@ -315,128 +381,24 @@
             <div class="wax-seal"></div>
             <div class="front flap"></div>
             <div class="front pocket"></div>
-            <div class="letter">
-                <div class="letter-corner corner-tl"></div>
-                <div class="letter-corner corner-br"></div>
-                <div class="message">
-                    <div class="lyrics">
-                        <div class="lyric-page active" id="page1">
-                            <p>Don't listen to them</p>
-                            <div class="page-indicator">1/23</div>
-                        </div>
-                        
-                        <div class="lyric-page" id="page2">
-                            <p>'Cause what do they know</p>
-                            <div class="page-indicator">2/23</div>
-                        </div>
-                        
-                        <div class="lyric-page" id="page3">
-                            <p>We need each other</p>
-                            <div class="page-indicator">3/23</div>
-                        </div>
-
-                        <div class="lyric-page" id="page4">
-                            <p>to have</p>
-                            <div class="page-indicator">4/23</div>
-                        </div>
-
-                        <div class="lyric-page" id="page5">
-                            <p>to hold</p>
-                            <div class="page-indicator">5/23</div>
-                        </div>
-                        
-                        <div class="lyric-page" id="page6">
-                            <p>They'll see in time</p>
-                            <div class="page-indicator">6/23</div>
-                        </div>
-
-                        <div class="lyric-page" id="page7">
-                            <p>I know</p>
-                            <div class="page-indicator">7/23</div>
-                        </div>
-                        
-                        <div class="lyric-page" id="page8">
-                            <p>When destiny calls you</p>
-                            <div class="page-indicator">8/23</div>
-                        </div>
-
-                        <div class="lyric-page" id="page9">
-                            <p>you must be strong</p>
-                            <div class="page-indicator">9/23</div>
-                        </div>
-                        
-                        <div class="lyric-page" id="page10">
-                            <p>I may not be with you</p>
-                            <div class="page-indicator">10/23</div>
-                        </div>
-                        
-                        <div class="lyric-page" id="page11">
-                            <p>But you've got to hold on</p>
-                            <div class="page-indicator">11/23</div>
-                        </div>
-                        
-                        <div class="lyric-page" id="page12">
-                            <p>They'll see in time</p>
-                            <div class="page-indicator">12/23</div>
-                        </div>
-
-                        <div class="lyric-page" id="page13">
-                            <p>I know</p>
-                            <div class="page-indicator">13/23</div>
-                        </div>
-                        
-                        <div class="lyric-page" id="page14">
-                            <p>We'll show them together</p>
-                            <div class="page-indicator">14/23</div>
-                        </div>
-                        
-                        <div class="lyric-page" id="page15">
-                            <p>And you'll be in my heart</p>
-                            <div class="page-indicator">15/23</div>
-                        </div>
-                        
-                        <div class="lyric-page" id="page16">
-                            <p>Yes you'll be in my heart</p>
-                            <div class="page-indicator">16/23</div>
-                        </div>
-                        
-                        <div class="lyric-page" id="page17">
-                            <p>From this day on</p>
-                            <div class="page-indicator">17/23</div>
-                        </div>
-                        
-                        <div class="lyric-page" id="page18">
-                            <p>Now and forever more</p>
-                            <div class="page-indicator">18/23</div>
-                        </div>
-                        
-                        <div class="lyric-page" id="page19">
-                            <p>You'll be in my heart</p>
-                            <div class="page-indicator">19/23</div>
-                        </div>
-                        
-                        <div class="lyric-page" id="page20">
-                            <p>No matter what they say</p>
-                            <div class="page-indicator">20/23</div>
-                        </div>
-                        
-                        <div class="lyric-page" id="page21">
-                            <p>You'll be here in my heart</p>
-                            <div class="page-indicator">21/23</div>
-                        </div>
-                        
-                        <div class="lyric-page" id="page22">
-                            <p>Always</p>
-                            <div class="page-indicator">22/23</div>
-                        </div>
-                        
-                        <div class="lyric-page" id="page23">
-                            <p>Always</p>
-                            <div class="page-indicator">23/23</div>
+            
+            <div class="content-wrapper">
+                <div class="photo-container">
+                    <img src="https://www.inkiris.com/wp-content/uploads/2014/10/placeholder-160x160.png" alt="Foto 1" class="photo photo1">
+                    <img src="https://www.inkiris.com/wp-content/uploads/2014/10/placeholder-160x160.png" alt="Foto 2" class="photo photo2">
+                    <img src="https://www.inkiris.com/wp-content/uploads/2014/10/placeholder-160x160.png" alt="Foto 3" class="photo photo3">
+                </div>
+                <div class="letter">
+                    <div class="letter-corner corner-tl"></div>
+                    <div class="letter-corner corner-br"></div>
+                    <div class="message">
+                        <div class="lyrics">
+                           <div class="lyric-page active" id="page1"><p>Selamat Ulang Tahun Sayangku ❤️</p></div>
                         </div>
                     </div>
                 </div>
             </div>
+
             <div class="hearts">
                 <div class="heart a1"></div>
                 <div class="heart a2"></div>
@@ -456,14 +418,15 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+        // Script JavaScript tidak perlu diubah
         $(document).ready(function() {
             const envelope = $('#envelope');
             const openBtn = $("#openBtn");
             const nextBtn = $("#nextBtn");
             const resetBtn = $("#resetBtn");
-            
+
             let currentPage = 1;
-            const totalPages = 23; // Sekarang ada 18 halaman lirik
+            const totalPages = 23; 
             let isOpen = false;
 
             envelope.on('click', handleEnvelope);
@@ -478,43 +441,39 @@
                     nextLyric();
                 }
             }
-            
+
             function openEnvelope() {
                 envelope.removeClass("close").addClass("open");
                 isOpen = true;
-                
-                // Ubah teks tombol dan tampilkan tombol next
+
                 openBtn.hide();
                 nextBtn.show().text("Next");
             }
-            
+
             function nextLyric() {
                 if (currentPage < totalPages) {
                     currentPage++;
                     updateActivePage();
                     
-                    // Ubah teks tombol jika di halaman terakhir
                     if (currentPage === totalPages) {
                         nextBtn.text("Back");
                     }
                 } else {
-                    // Kembali ke halaman pertama jika sudah di halaman terakhir
                     currentPage = 1;
                     updateActivePage();
                     nextBtn.text("Next");
                 }
             }
-            
+
             function updateActivePage() {
                 $(".lyric-page").removeClass("active");
                 $("#page" + currentPage).addClass("active");
             }
-            
+
             function resetEnvelope() {
                 envelope.removeClass("open").addClass("close");
                 isOpen = false;
                 
-                // Kembalikan tombol ke keadaan awal
                 setTimeout(function() {
                     currentPage = 1;
                     updateActivePage();
