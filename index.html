@@ -51,23 +51,19 @@
             border-bottom-left-radius: 6px;
             border-bottom-right-radius: 6px;
         }
-        
-        /* === PERUBAHAN CSS DIMULAI DI SINI === */
 
-        /* 1. Wrapper baru untuk menampung surat dan foto */
         .content-wrapper {
             position: absolute;
             width: 100%;
             height: 100%;
             top: 0;
             left: 0;
-            z-index: 1; /* Atur z-index awal */
+            z-index: 1;
         }
-        
-        /* 2. Modifikasi .letter, hapus properti yang dipindah ke wrapper */
+
         .letter {
-            position: relative; /* Diubah dari absolute/relative sebelumnya */
-            z-index: 10;       /* Pastikan surat di atas foto */
+            position: relative;
+            z-index: 10;
             background-color: #e0d9dd;
             width: 90%;
             margin: 0 auto;
@@ -78,6 +74,11 @@
             padding: 15px;
             box-sizing: border-box;
             overflow: hidden;
+        }
+        
+        /* Tambahkan cursor pointer saat amplop terbuka */
+        .open .letter {
+            cursor: pointer;
         }
 
         .letter:after {
@@ -93,15 +94,14 @@
                 rgba(255,231,236,1.00) 100%);
             pointer-events: none;
         }
-        
-        /* 3. Style untuk kontainer foto dan foto itu sendiri */
+
         .photo-container {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 11; 
+            z-index: 11;
             pointer-events: none;
         }
 
@@ -119,7 +119,6 @@
             transition: all 0.5s cubic-bezier(.17,.67,.6,1.24);
         }
 
-        /* 4. Terapkan animasi ke .content-wrapper, bukan ke .letter */
         .close .content-wrapper {
             transform: translateY(0px);
             transition: transform 0.4s ease, z-index 1s;
@@ -127,32 +126,29 @@
         }
 
         .open .content-wrapper {
-            transform: translateY(-120px) rotate(-2deg);
+            transform: translateY(-140px) rotate(-2deg);
             transition: transform 0.4s 0.6s ease, z-index 0.6s;
             z-index: 2;
         }
 
-        /* 5. Atur animasi untuk foto saat amplop terbuka */
         .open .photo {
             opacity: 1;
         }
 
         .open .photo1 {
-            transform: translate(-130%, -5%) rotate(-20deg) scale(1);
+            transform: translate(-130%, -10%) rotate(-10deg) scale(1);
             transition-delay: 0.8s;
         }
 
         .open .photo2 {
-            transform: translate(-50%, -20%) rotate(5deg) scale(1);
+            transform: translate(-50%, -7%) rotate(5deg) scale(1);
             transition-delay: 0.9s;
         }
 
         .open .photo3 {
-            transform: translate(30%, -15%) rotate(15deg) scale(1);
+            transform: translate(30%, -3%) rotate(10deg) scale(1);
             transition-delay: 1s;
         }
-        
-        /* === AKHIR PERUBAHAN CSS === */
 
         .message {
             position: relative;
@@ -164,34 +160,28 @@
             padding: 5px;
             height: 100%;
             overflow-y: auto;
+            display: flex; /* Untuk menengahkan teks */
+            justify-content: center;
+            
         }
 
         .message p {
             margin: 10px 0;
-            font-size: 1em;
+            font-size: 1.2em; /* Ukuran disesuaikan */
             text-shadow: 0 2px 3px rgba(0,0,0,0.1);
         }
 
+        .lyric-subtitle {
+            font-family: 'Handlee', cursive;
+            color: #d46a84;
+            font-size: 0.5em !important;
+        }
         .lyrics {
-            display: none;
-            font-size: 1.2em;
-            line-height: 1.5;
-            text-align: center;
-            opacity: 0;
-            transition: opacity 1s ease-in;
-            max-height: 130px;
-            overflow-y: auto;
+             display: block; /* Ubah agar pesan terlihat */
         }
-
+        
         .lyric-page {
-            display: none;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-        }
-
-        .lyric-page.active {
-            display: block;
-            opacity: 1;
+            display: block; /* Ubah agar pesan terlihat */
         }
 
         @keyframes float {
@@ -216,10 +206,6 @@
             transition: transform 0.4s 0.6s ease, z-index 1s;
             z-index: 5;
         }
-
-        /* Hapus style animasi .letter yang lama */
-        /* .close .letter { ... } */
-        /* .open .letter { ... } */
 
         .letter-corner {
             position: absolute;
@@ -344,35 +330,97 @@
             box-shadow: 0 7px 25px rgba(0,0,0,0.2);
         }
 
-        .title-text {
-            opacity: 1;
-            transition: opacity 0.5s ease;
-        }
-
-        .open .title-text {
-            opacity: 0;
-            display: none;
-        }
-
-        .open .lyrics {
-            display: block;
-            opacity: 1;
-        }
-
-        .page-indicator {
-            position: absolute;
-            bottom: 5px;
+                /* === CSS BARU UNTUK TAMPILAN FULLSCREEN === */
+        #fullscreen-letter {
+            position: fixed;
+            top: 0;
             left: 0;
-            right: 0;
-            text-align: center;
-            font-size: 0.8em;
-            color: #d46a84;
-            opacity: 0.7;
+            width: 100%;
+            height: 100%;
+            z-index: 1000;
+            background-color: #fdfdfa;
+            background-image:
+                linear-gradient(90deg, transparent 59px, #ffc0cb 59px, #ffc0cb 61px, transparent 61px),
+                linear-gradient(#e0f0ff .5px, transparent .5px);
+            background-size: 100% 2.5em; /* Jarak baris disesuaikan */
+            padding: 60px 70px;
+            box-sizing: border-box;
+            display: none;
+            overflow-y: auto;
         }
 
-        #nextBtn {
-            display: none;
+        #close-fullscreen {
+            position: fixed;
+            top: 20px;
+            right: 30px;
+            font-size: 40px;
+            color: #d46a84;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
         }
+        
+        #fullscreen-content {
+            font-family: 'Handlee', cursive;
+            color: #333;
+            font-size: 1.5em; /* Ukuran font umum untuk teks */
+            line-height: 1.5em; /* Sesuaikan dengan line-height notes */
+            text-align: center; /* Teks default rata tengah */
+            padding-bottom: 30px; /* Jarak bawah */
+        }
+
+        #fullscreen-content p {
+            margin-bottom: 1em;
+            font-size: 1.3em; /* Untuk paragraf utama */
+            line-height: 1.5;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        /* Gaya untuk kolase foto */
+        .photo-collage {
+            position: relative;
+            width: 500px;
+            height: 500px;
+            margin: 20px auto;
+            }
+
+.photo-collage img,
+.photo-collage video {
+  position: absolute;
+  width: 250px;
+  height: 250px;
+  object-fit: cover;
+  border: 5px solid white;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Posisi acak manual */
+.photo-collage img:nth-child(2) { top: 0; left: 0; transform: rotate(-5deg);z-index: -1; }
+.photo-collage img:nth-child(3) { top: -15px; left: 350px; transform: rotate(3deg);z-index: -1; }
+.photo-collage img:nth-child(4) { top: 250px; left: 50px; transform: rotate(-8deg); }
+.photo-collage img:nth-child(5) { top: 300px; left: 300px; transform: rotate(5deg); }
+.photo-collage img:nth-child(6) { top: 450px; left: 150px; transform: rotate(-2deg); }
+
+.photo-collage video {
+  top: 100px;
+  left: 200px;
+  transform: rotate(2deg);
+}
+
+.photo-collage img:hover,
+.photo-collage video:hover {
+  transform: scale(1.05) rotate(0deg);
+  z-index: 10;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+}
+
     </style>
 </head>
 <body>
@@ -384,16 +432,19 @@
             
             <div class="content-wrapper">
                 <div class="photo-container">
-                    <img src="https://www.inkiris.com/wp-content/uploads/2014/10/placeholder-160x160.png" alt="Foto 1" class="photo photo1">
-                    <img src="https://www.inkiris.com/wp-content/uploads/2014/10/placeholder-160x160.png" alt="Foto 2" class="photo photo2">
-                    <img src="https://www.inkiris.com/wp-content/uploads/2014/10/placeholder-160x160.png" alt="Foto 3" class="photo photo3">
+                    <img src="PHOTO-1.jpeg" alt="Foto 1" class="photo photo1">
+                    <img src="PHOTO-2.jpg" alt="Foto 2" class="photo photo2">
+                    <img src="PHOTO-3.jpeg" alt="Foto 3" class="photo photo3">
                 </div>
                 <div class="letter">
                     <div class="letter-corner corner-tl"></div>
                     <div class="letter-corner corner-br"></div>
                     <div class="message">
+                        
                         <div class="lyrics">
+                           
                            <div class="lyric-page active" id="page1"><p>Selamat Ulang Tahun Sayangku ❤️</p></div>
+                           <p class="lyric-subtitle">Baca selengkapnya</p>
                         </div>
                     </div>
                 </div>
@@ -416,72 +467,78 @@
         <button id="resetBtn">Close</button>
     </div>
 
+    <div id="fullscreen-letter">
+        <button id="close-fullscreen">&times;</button>
+        <div id="fullscreen-content">
+            <p style="font-size: 2.5em; color: #d46a84; margin-bottom: 20px;">Selamat Ulang Tahun, Liaaa Sayangku! 🎉</p>
+            <p>Di hari paling istimewa ini, aku cuma mau ngomong satu hal.</p>
+            <p>Terimakasih sudah kuat selama ini, dari yang awalnya kamu cerita sedih kerjaan sampe sekarang udah seneng kerja lagi.</p>
+            <p>Makasih sudah selalu percaya ke aku dan pasti aku bakal selalu tetep percaya kamu juga</p>
+            <p>Semoga di usiamu yang ke <strong>24</strong>, kamu semakin bahagia, sehat, dan makin dewasa</p>
+            <p>Terimakasih, LIAAA aku sayang kamu selamanya 🥰</p>
+            <div class="container">
+                <div class="photo-collage">
+                    <video width="480" height="270" autoplay muted loop playsinline>
+                        <source src="video-1.mp4" type="video/mp4">
+                      </video>
+                    <img src="collage-1.png" alt="Memori 1">
+                    <img src="collage-2.jpg" alt="Memori 2">
+                    <img src="collage-3.jpg" alt="Memori 3">
+                    <img src="collage-4.jpg" alt="Memori 4">
+                    <img src="collage-5.jpg" alt="Memori 5">
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        // Script JavaScript tidak perlu diubah
         $(document).ready(function() {
             const envelope = $('#envelope');
             const openBtn = $("#openBtn");
-            const nextBtn = $("#nextBtn");
             const resetBtn = $("#resetBtn");
+            
+            const letter = $('.letter');
+            const fullscreenView = $('#fullscreen-letter');
+            const fullscreenContent = $('#fullscreen-content');
+            const closeFullscreenBtn = $('#close-fullscreen');
 
-            let currentPage = 1;
-            const totalPages = 23; 
             let isOpen = false;
 
-            envelope.on('click', handleEnvelope);
-            openBtn.on('click', handleEnvelope);
-            resetBtn.on('click', resetEnvelope);
-            nextBtn.on('click', nextLyric);
-
-            function handleEnvelope() {
+            // Klik untuk membuka amplop
+            openBtn.on('click', openEnvelope);
+            envelope.on('click', function() {
                 if (!isOpen) {
                     openEnvelope();
-                } else {
-                    nextLyric();
                 }
-            }
+            });
+
+            // Klik untuk menutup amplop
+            resetBtn.on('click', resetEnvelope);
 
             function openEnvelope() {
+                if(isOpen) return;
                 envelope.removeClass("close").addClass("open");
                 isOpen = true;
-
-                openBtn.hide();
-                nextBtn.show().text("Next");
-            }
-
-            function nextLyric() {
-                if (currentPage < totalPages) {
-                    currentPage++;
-                    updateActivePage();
-                    
-                    if (currentPage === totalPages) {
-                        nextBtn.text("Back");
-                    }
-                } else {
-                    currentPage = 1;
-                    updateActivePage();
-                    nextBtn.text("Next");
-                }
-            }
-
-            function updateActivePage() {
-                $(".lyric-page").removeClass("active");
-                $("#page" + currentPage).addClass("active");
             }
 
             function resetEnvelope() {
                 envelope.removeClass("open").addClass("close");
                 isOpen = false;
-                
-                setTimeout(function() {
-                    currentPage = 1;
-                    updateActivePage();
-                    
-                    openBtn.show();
-                    nextBtn.hide();
-                }, 600);
             }
+            
+            // --- LOGIKA BARU UNTUK FULLSCREEN ---
+            
+            letter.on('click', function() {
+                if (!isOpen) return; // Hanya berfungsi jika amplop terbuka
+
+                fullscreenView.fadeIn();
+            });
+
+            closeFullscreenBtn.on('click', function() {
+                fullscreenView.fadeOut();
+            });
         });
     </script>
 </body>
