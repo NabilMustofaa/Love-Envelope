@@ -381,6 +381,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            margin-bottom: 200px;
         }
         /* Gaya untuk kolase foto */
         .photo-collage {
@@ -421,6 +422,61 @@
   z-index: 10;
   box-shadow: 0 10px 25px rgba(0,0,0,0.4);
 }
+
+#gift-button {
+            margin-top: 40px;
+            padding: 15px 30px;
+            font-family: 'Handlee', cursive;
+            font-size: 1.2em;
+            cursor: pointer;
+            border: 2px solid var(--color-env2);
+            background-color: var(--color-env);
+            color: white;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+        }
+
+        #gift-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Kontainer untuk teks hadiah animasi */
+        #gift-reveal {
+            margin-top: 30px;
+            min-height: 100px; /* Beri ruang agar tidak loncat */
+        }
+        
+        /* Style untuk teks yang akan dianimasikan */
+        .animated-text {
+            display: inline-block;
+            border-right: 3px solid rgba(0,0,0,.75);
+            white-space: nowrap;
+            overflow: hidden;
+            margin: 0 auto;
+            color: #d46a84;
+            font-size: 1.5em !important;
+            visibility: hidden; /* Sembunyikan awalnya */
+        }
+
+        /* Kelas untuk memicu animasi */
+        .animated-text.animate {
+            visibility: visible;
+            animation: typing 4s steps(40, end),
+                       blink-caret .75s step-end infinite;
+        }
+
+        /* Keyframes untuk animasi mengetik */
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        
+        /* Keyframes untuk kursor berkedip */
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: rgba(0,0,0,.75); }
+        }
 
     </style>
 </head>
@@ -477,6 +533,11 @@
             <p>Makasih sudah selalu percaya ke aku dan pasti aku bakal selalu tetep percaya kamu juga</p>
             <p>Semoga di usiamu yang ke <strong>24</strong>, kamu semakin bahagia, sehat, dan makin dewasa</p>
             <p>Terimakasih, LIAAA aku sayang kamu selamanya 🥰</p>
+            <button id="gift-button">🎁 Buka Hadiah Spesial</button>
+
+            <div id="gift-reveal">
+                <p class="animated-text">Hadiahnya... Tunggu Bulannn Desember Yahhh XIXIXI 🤭🤭</p>
+            </div>    
             <div class="container">
                 <div class="photo-collage">
                     <video width="480" height="270" autoplay muted loop playsinline>
@@ -489,6 +550,7 @@
                     <img src="collage-5.jpg" alt="Memori 5">
                 </div>
             </div>
+            
         </div>
     </div>
 
@@ -539,6 +601,18 @@
 
             closeFullscreenBtn.on('click', function() {
                 fullscreenView.fadeOut();
+            });
+
+            // --- VARIABEL BARU UNTUK FITUR HADIAH ---
+            const giftButton = $('#gift-button');
+            const animatedText = $('.animated-text');
+            // --- JAVASCRIPT BARU UNTUK LOGIKA HADIAH ---
+            giftButton.on('click', function() {
+                // Tambahkan kelas untuk memicu animasi
+                animatedText.addClass('animate');
+                
+                // Sembunyikan tombol setelah diklik
+                $(this).fadeOut();
             });
         });
     </script>
