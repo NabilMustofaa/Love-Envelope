@@ -189,6 +189,9 @@
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
         }
+        .envlope-container{
+            margin: auto;
+        }
 
         .envlope-wrapper {
             height: 380px;
@@ -481,7 +484,8 @@
     </style>
 </head>
 <body>
-    <div class="envlope-wrapper">
+    <div class="envlope-container">
+        <div class="envlope-wrapper">
         <div id="envelope" class="close">
             <div class="wax-seal"></div>
             <div class="front flap"></div>
@@ -522,6 +526,7 @@
     <div class="controls">
         <button id="openBtn">Open</button>
         <button id="resetBtn">Close</button>
+    </div>
     </div>
 
     <div id="fullscreen-letter">
